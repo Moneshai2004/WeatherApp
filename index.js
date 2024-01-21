@@ -1,26 +1,38 @@
 function getWeather() {
-    const apiKey = 'YOUR_API_KEY';
-    const cityInput = document.getElementById('cityInput').value;
-    const weatherInfo = document.getElementById('weatherInfo');
+    const apiKey = 'YOUR_OPENWEATHERMAP_API_KEY';
+    const city = document.getElementById('cityInput').value;
 
-    if (cityInput.trim() === '') {
+    if (city === '') {
         alert('Please enter a city name');
         return;
     }
 
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityInput}&appid=${apiKey}&units=metric`;
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
 
     fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
-            const { name, main, weather } = data;
-            const temperature = main.temp;
-            const description = weather[0].description;
-
-            weatherInfo.innerHTML = `<p>Weather in ${name}: ${description}</p><p>Temperature: ${temperature}°C</p>`;
+            displayWeather(data);
         })
         .catch(error => {
             console.error('Error fetching weather data:', error);
-            weatherInfo.innerHTML = '<p>Error fetching weather data. Please try again.</p>';
+            alert('Error fetching weather data. Please try again.');
         });
+}
+
+function displayWeather(data) {
+    const weatherInfoDiv = document.getElementById('weatherInfo');
+
+    const cityName = data.name;
+    const temperature = Math.round(data.main.temp - 273.15); // Convert temperature to Celsius
+
+    const weatherDescription = data.weather[0].description;
+
+    const html = `
+        <h2>${cityName}</h2>
+        <p>${temperature}°C</p>
+        <p>${weatherDescription}</p>
+    `;
+
+    weatherInfoDiv.innerHTML = html;
 }
