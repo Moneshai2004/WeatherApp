@@ -3,23 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
     <title>Weather App</title>
 </head>
 <body>
-    
-    <div class="card">
-        <div class="search">
-            <input type="text" placeholder="enter city name" spellcheck="false">
-            <button><img src="images/search.png"></button>
+    <div class="container">
+        <h1>Weather App</h1>
+        <div id="weather-info">
+            <label for="city">Enter city:</label>
+            <input type="text" id="city" placeholder="Enter city">
+            <button onclick="getWeather()">Get Weather</button>
+            <div id="result"></div>
         </div>
-<div class="weather"> <img src="images/rain.png" class="weather-icon"> 
-    <h1 class="temp">22°c</h1> 
-    <h2 class="city">New York</h2>
-     <div class="details"> 
-        <div class="col"> <img src="images/humidity.png"> <div>
-             <p class="humidity">50%</p> <p>Humidity</p> 
-            </div> 26 </div> 27 </div> 28 </div> 29 </div> 30 31 </body> 
+    </div>
     <script src="script.js"></script>
 </body>
 </html>

@@ -1,80 +1,38 @@
-et menuIcon = document.querySelector('#menu-icon');
-let navbar = document.querySelector('.navbar');
+const apiKey = 'YOUR_OPENWEATHERMAP_API_KEY'; // Replace with your API key
 
-menuIcon.onclick = () => {
-    menuIcon.classList.toggle('bx-x');
-    navbar.classList.toggle('active');
-};
+function getWeather() {
+    const cityInput = document.getElementById('city');
+    const cityName = cityInput.value;
 
+    if (cityName.trim() === '') {
+        alert('Please enter a city name.');
+        return;
+    }
 
-/*========== scroll sections active link ==========*/
-let sections = document.querySelectorAll('section');
-let navLinks = document.querySelectorAll('header nav a');
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`;
 
-window.onscroll = () => {
-    sections.forEach(sec => {
-        let top = window.scrollY;
-        let offset = sec.offsetTop - 150;
-        let height = sec.offsetHeight;
-        let id = sec.getAttribute('id');
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            displayWeather(data);
+        })
+        .catch(error => {
+            console.error('Error fetching weather data:', error);
+        });
+}
 
-        if(top >= offset && top < offset + height) {
-            navLinks.forEach(links => {
-                links.classList.remove('active');
-                document.querySelector('header nav a[href*=' + id + ']').classList.add('active');
-            });
-        };
-    });
+function displayWeather(data) {
+    const resultContainer = document.getElementById('result');
+    
+    if (data.cod === '404') {
+        resultContainer.innerHTML = `<p>${data.message}</p>`;
+    } else {
+        const weatherDescription = data.weather[0].description;
+        const temperature = data.main.temp;
 
-
-/*========== sticky navbar ==========*/
-let header = document.querySelector('.header');
-
-header.classList.toggle('sticky', window.scrollY > 100);
-
-
-/*========== remove menu icon navbar when click navbar link (scroll) ==========*/
-menuIcon.classList.remove('bx-x');
-navbar.classList.remove('active');
-
-};
-
-
-/*========== swiper ==========*/
-var swiper = new Swiper(".mySwiper", {
-    slidesPerView: 1,
-    spaceBetween: 50,
-    loop: true,
-    grabCursor: true,
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
-    },
-    navigation: {
-      nextEl: ".swiper-button-next",
-      prevEl: ".swiper-button-prev",
-    },
-});
-
-
-/*========== dark light mode ==========*/
-let darkModeIcon = document.querySelector('#darkMode-icon');
-
-darkModeIcon.onclick = () => {
-    darkModeIcon.classList.toggle('bx-sun');
-    document.body.classList.toggle('dark-mode');
-};
-
-
-/*========== scroll reveal ==========*/
-ScrollReveal({
-    // reset: true,
-    distance: '80px',
-    duration: 2000,
-    delay: 200
-});
-
-ScrollReveal().reveal('.home-content, .heading', { origin: 'top' });
-ScrollReveal().reveal('.home-img img, .services-container, .portfolio-box, .testimonial-wrapper, .contact form', { origin: 'bottom' });
-ScrollReveal().reveal('.home-content h1, .about-img img', { origin: 'left' });
-ScrollReveal().reveal('.home-content h3, .home-content p, .about-content', { origin: 'right' });
+        resultContainer.innerHTML = `
+            <p>Weather: ${weatherDescription}</p>
+            <p>Temperature: ${temperature} &#8451;</p>
+        `;
+    }
+}
