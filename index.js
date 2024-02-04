@@ -9,16 +9,7 @@ function getWeather() {
         return;
     }
 
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`;
-
-    fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-            displayWeather(data);
-        })
-        .catch(error => {
-            console.error('Error fetching weather data:', error);
-        });
+   
 }
 
 function displayWeather(data) {
@@ -36,7 +27,7 @@ function displayWeather(data) {
         `;
     }
 }
-const apiKey = 'YOUR_OPENWEATHERMAP_API_KEY'; // Replace with your API key
+
 
 function getWeather() {
     const cityInput = document.getElementById('city');
