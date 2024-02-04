@@ -34,7 +34,7 @@ function getWeather() {
     const cityName = cityInput.value;
 
     if (cityName.trim() === '') {
-        alert('Please enter a city name.');
+        alert('Please enter a city ');
         return;
     }
 
